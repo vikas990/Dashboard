@@ -1,20 +1,17 @@
 # Dashboard
 
-* This is a Simple Portfolio Project where you can see some of the project which i have made.
-* This Project not yet completed but still you can look at it.
+- Dashboard that gives a overview of stats.
 
 # Features:-
 
-* Light and Dark mode.
-* Connect with social networking sites.
-* can send mail from the form.
+- Light and Dark mode.
+- Grid Tables customizable.
+- Visual Charts representations of stats (using Bar, Line, Pie and Geographical Charts).
 
 # Tech Stack Used:-
 
-* React Js.
-* Material-UI.
-
+- React Js.
+- Material-UI.
+- Nevo Charts.
 
 ## Demo:- https://aquamarine-capybara-bd2a76.netlify.app/
-
-
