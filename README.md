@@ -15,3 +15,5 @@
 - Nevo Charts.
 
 ## Demo:- https://aquamarine-capybara-bd2a76.netlify.app/
+
+<img src="/public/project2.png">
