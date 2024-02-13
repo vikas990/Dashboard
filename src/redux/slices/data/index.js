@@ -1,15 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
+const CYPTO_URL = "https://openapiv1.coinstats.app/coins";
 export const fetchData = createAsyncThunk("fetchChartData", async () => {
-  const newData = await fetch("https://openapiv1.coinstats.app/coins", {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      "X-API-KEY": "o61NvpuVIv4IcVZ2zVnkKUI0PNO1mbB6OPHhAGOzL1I=",
-    },
-  });
+  try {
+    const response = await axios(CYPTO_URL, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "X-API-KEY": "o61NvpuVIv4IcVZ2zVnkKUI0PNO1mbB6OPHhAGOzL1I=",
+      },
+    });
 
-  return newData.json();
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
 });
 
 export const dataSlice = createSlice({
