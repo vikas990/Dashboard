@@ -1,7 +1,6 @@
 import { Box, useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import { mockBarData as data } from "../data/mockData";
 import { fetchData } from "../redux/slices/data";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
