@@ -2,21 +2,30 @@ import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../Components/Header";
 import StatBox from "../../Components/StatBox";
 import LineChart from "../../Components/LineChart";
 import ProgressCircle from "../../Components/ProgressCircle";
 import BarChart from "../../Components/BarChart";
 import GeographyChart from "../../Components/GeographyChart";
+import { fetchNFTData } from "../../redux/slices/nftData";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../global/Loading";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  // Fetching and dispatching actions in Redux
+  const dispatch = useDispatch();
+  const NFTData = useSelector((state) => state?.data);
+  // dispatching fetch data on load
+  useEffect(() => {
+    dispatch(fetchNFTData());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  console.log(NFTData);
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -47,82 +56,40 @@ const Dashboard = () => {
         gap="20px"
       >
         {/* ROW 1 */}
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="12,361"
-            subtitle="Emails Sent"
-            progress="0.75"
-            increase="+14%"
-            icon={
-              <EmailIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
-            progress="0.50"
-            increase="+21%"
-            icon={
-              <PointOfSaleIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="32,441"
-            subtitle="New Clients"
-            progress="0.30"
-            increase="+5%"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="1,325,134"
-            subtitle="Traffic Received"
-            progress="0.80"
-            increase="+43%"
-            icon={
-              <TrafficIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
+        <>
+          {NFTData === undefined ? (
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Loader />
+            </Box>
+          ) : (
+            NFTData?.data?.data?.slice(0, 4)?.map((d) => (
+              <Box
+                gridColumn="span 3"
+                backgroundColor={colors.primary[400]}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <StatBox
+                  title={d.totalSales.toLocaleString("en-US")}
+                  subtitle={d.name}
+                  progress={Math.floor(d.totalVolume % 360) / 1000}
+                  increase={`+${Math.round(
+                    Math.floor(d.totalVolume % 360) / 10
+                  )}`}
+                  icon={
+                    // eslint-disable-next-line jsx-a11y/img-redundant-alt
+                    <img
+                      style={{ color: colors.greenAccent[600], width: "40px" }}
+                      src={d.img}
+                      alt="NFT Image"
+                    />
+                  }
+                />
+              </Box>
+            ))
+          )}
+        </>
 
         {/* ROW 2 */}
         <Box
@@ -253,7 +220,7 @@ const Dashboard = () => {
             fontWeight="600"
             sx={{ padding: "30px 30px 0 30px" }}
           >
-            Sales Quantity
+            Cypto Change Rate
           </Typography>
           <Box height="250px" mt="-20px">
             <BarChart isDashboard={true} />

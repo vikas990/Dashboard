@@ -21,19 +21,7 @@ const BarChart = ({ isDashboard = false }) => {
   }, []);
 
   // Preparing data for chart
-  // export const mockBarData = [
-  //   {
-  //     country: "AD",
-  //     "hot dog": 137,
-  //     "hot dogColor": "hsl(229, 70%, 50%)",
-  //     burger: 96,
-  //     burgerColor: "hsl(296, 70%, 50%)",
-  //     kebab: 72,
-  //     kebabColor: "hsl(97, 70%, 50%)",
-  //     donut: 140,
-  //     donutColor: "hsl(340, 70%, 50%)",
-  //   },
-  const barChartData = chartData?.data?.result?.slice(0, 7)?.map((d) => {
+  const barChartData = chartData?.data?.result?.map((d) => {
     return {
       Coins: d.name,
       "1 hour": d.priceChange1h,
