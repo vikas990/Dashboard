@@ -1,7 +1,6 @@
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../theme";
 import { Box, useTheme } from "@mui/material";
-import { mockPieData as data } from "../data/mockData";
 import { fetchData } from "../redux/slices/data";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";

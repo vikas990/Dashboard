@@ -1,7 +1,6 @@
 import { ResponsiveLine } from "@nivo/line";
 import { Box, useTheme } from "@mui/material";
 import { tokens } from "../theme";
-// import { mockLineData as data } from "../data/mockData";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchData } from "../redux/slices/data";
 import { useEffect } from "react";
