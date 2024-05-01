@@ -37,7 +37,7 @@ const PieChart = () => {
           : "hsl(344, 70%, 50%)",
     };
   });
-  console.log(PieChartData);
+
   return (
     <>
       {PieChartData === undefined ? (

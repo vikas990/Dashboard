@@ -25,7 +25,7 @@ const Dashboard = () => {
     dispatch(fetchNFTData());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(NFTData);
+  console.log(">>>>>>>>>>>>", NFTData?.data?.data);
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -71,7 +71,7 @@ const Dashboard = () => {
                 justifyContent="center"
               >
                 <StatBox
-                  title={d.totalSales.toLocaleString("en-US")}
+                  title={d?.totalSales?.toLocaleString("en-US")}
                   subtitle={d.name}
                   progress={Math.floor(d.totalVolume % 360) / 1000}
                   increase={`+${Math.round(

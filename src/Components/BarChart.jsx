@@ -31,7 +31,6 @@ const BarChart = ({ isDashboard = false }) => {
       "1 weekColor": "hsl(229, 70%, 50%)",
     };
   });
-  console.log(barChartData);
 
   return (
     <>
