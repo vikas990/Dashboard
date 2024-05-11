@@ -1,23 +1,15 @@
 import { ResponsiveLine } from "@nivo/line";
 import { Box, useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchData } from "../redux/slices/data";
-import { useEffect } from "react";
 import Loader from "../scenes/global/Loading";
 
-const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
+const LineChart = ({
+  isCustomLineColors = false,
+  isDashboard = false,
+  chartData,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-  // Fetching and dispatching actions in Redux
-  const dispatch = useDispatch();
-  const chartData = useSelector((state) => state.data);
-  // dispatching fetch data on load
-  useEffect(() => {
-    dispatch(fetchData());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Preparing data for chart
   const lineChartData = chartData?.data?.result?.slice(0, 3)?.map((d) => {

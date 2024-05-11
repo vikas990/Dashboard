@@ -1,6 +1,5 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import Header from "../../Components/Header";
 import StatBox from "../../Components/StatBox";
@@ -12,20 +11,29 @@ import { fetchNFTData } from "../../redux/slices/nftData";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../global/Loading";
+import { fetchData } from "../../redux/slices/data";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  // ChartData
   // Fetching and dispatching actions in Redux
   const dispatch = useDispatch();
+  const chartData = useSelector((state) => state.data);
+  // dispatching fetch data on load
+  useEffect(() => {
+    dispatch(fetchData());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Fetching and dispatching actions in Redux
   const NFTData = useSelector((state) => state?.data);
   // dispatching fetch data on load
   useEffect(() => {
     dispatch(fetchNFTData());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(">>>>>>>>>>>>", NFTData?.data?.data);
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -71,11 +79,15 @@ const Dashboard = () => {
                 justifyContent="center"
               >
                 <StatBox
-                  title={d?.totalSales?.toLocaleString("en-US")}
+                  title={
+                    d?.totalSales !== undefined
+                      ? d?.totalSales?.toLocaleString("en-US")
+                      : 0
+                  }
                   subtitle={d.name}
-                  progress={Math.floor(d.totalVolume % 360) / 1000}
+                  progress={Math.floor(d.floorPriceMc % 360) / 100}
                   increase={`+${Math.round(
-                    Math.floor(d.totalVolume % 360) / 10
+                    Math.floor(d.floorPriceMc % 360) / 10
                   )}`}
                   icon={
                     // eslint-disable-next-line jsx-a11y/img-redundant-alt
@@ -129,7 +141,7 @@ const Dashboard = () => {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+            <LineChart isDashboard={true} chartData={chartData} />
           </Box>
         </Box>
         <Box
@@ -147,10 +159,10 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
+              Top 10 NFT's
             </Typography>
           </Box>
-          {mockTransactions.map((transaction, i) => (
+          {NFTData?.data?.data?.slice(0, 10)?.map((transaction, i) => (
             <Box
               key={`${transaction.txId}-${i}`}
               display="flex"
@@ -165,19 +177,23 @@ const Dashboard = () => {
                   variant="h5"
                   fontWeight="600"
                 >
-                  {transaction.txId}
+                  {transaction.name}
                 </Typography>
                 <Typography color={colors.grey[100]}>
-                  {transaction.user}
+                  {transaction.blockchain}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
+              <Box color={colors.grey[100]}>
+                {transaction?.createdDate !== undefined
+                  ? transaction?.createdDate
+                  : "2024-01-05"}
+              </Box>
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"
                 borderRadius="4px"
               >
-                ${transaction.cost}
+                ${Number(transaction.floorPriceUsd).toFixed(2)}
               </Box>
             </Box>
           ))}
@@ -223,7 +239,7 @@ const Dashboard = () => {
             Cypto Change Rate
           </Typography>
           <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
+            <BarChart isDashboard={true} chartData={chartData} />
           </Box>
         </Box>
         <Box
