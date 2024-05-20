@@ -11,7 +11,6 @@ import { fetchNFTData } from "../../redux/slices/nftData";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../global/Loading";
-import { fetchData } from "../../redux/slices/data";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -20,20 +19,15 @@ const Dashboard = () => {
   // ChartData
   // Fetching and dispatching actions in Redux
   const dispatch = useDispatch();
-  const chartData = useSelector((state) => state.data);
-  // dispatching fetch data on load
-  useEffect(() => {
-    dispatch(fetchData());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  // Fetching and dispatching actions in Redux
   const NFTData = useSelector((state) => state?.data);
+
   // dispatching fetch data on load
   useEffect(() => {
     dispatch(fetchNFTData());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -141,7 +135,7 @@ const Dashboard = () => {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} chartData={chartData} />
+            <LineChart isDashboard={true} />
           </Box>
         </Box>
         <Box
@@ -239,7 +233,7 @@ const Dashboard = () => {
             Cypto Change Rate
           </Typography>
           <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} chartData={chartData} />
+            <BarChart isDashboard={true} />
           </Box>
         </Box>
         <Box

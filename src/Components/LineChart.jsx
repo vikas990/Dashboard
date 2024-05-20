@@ -2,41 +2,52 @@ import { ResponsiveLine } from "@nivo/line";
 import { Box, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import Loader from "../scenes/global/Loading";
+import { fetchData } from "../redux/slices/data";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const LineChart = ({
-  isCustomLineColors = false,
-  isDashboard = false,
-  chartData,
-}) => {
+const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const dispatch = useDispatch();
+  const chartData = useSelector((state) => state.data);
+
+  useEffect(() => {
+    dispatch(fetchData());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Preparing data for chart
-  const lineChartData = chartData?.data?.result?.slice(0, 3)?.map((d) => {
-    return {
-      id: d.name,
-      color:
-        d.id === "bitcoin"
-          ? tokens("dark").greenAccent[500]
-          : d.id === "ethereum"
-          ? tokens("dark").blueAccent[300]
-          : tokens("dark").redAccent[200],
-      data: [
-        {
-          x: "1 hour",
-          y: d.priceChange1h,
-        },
-        {
-          x: "1 day",
-          y: d.priceChange1d,
-        },
-        {
-          x: "1 week",
-          y: d.priceChange1w,
-        },
-      ],
-    };
-  });
+  const lineChartData = (
+    chartData?.data?.result ? chartData?.data?.result : chartData?.data?.data
+  )
+    ?.slice(0, 3)
+    ?.map((d) => {
+      return {
+        id: d.name,
+        color:
+          d.id === "bitcoin"
+            ? tokens("dark").greenAccent[500]
+            : d.id === "ethereum"
+            ? tokens("dark").blueAccent[300]
+            : tokens("dark").redAccent[200],
+        data: [
+          {
+            x: "1 hour",
+            y: d.priceChange1h,
+          },
+          {
+            x: "1 day",
+            y: d.priceChange1d,
+          },
+          {
+            x: "1 week",
+            y: d.priceChange1w,
+          },
+        ],
+      };
+    });
 
   return (
     <>

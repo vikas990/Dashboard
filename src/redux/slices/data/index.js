@@ -11,7 +11,6 @@ export const fetchData = createAsyncThunk("fetchChartData", async () => {
         "X-API-KEY": "o61NvpuVIv4IcVZ2zVnkKUI0PNO1mbB6OPHhAGOzL1I=",
       },
     });
-
     return response.data;
   } catch (error) {
     return error.message;

@@ -2,13 +2,26 @@ import { Box, useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
 import Loader from "../scenes/global/Loading";
+import { fetchData } from "../redux/slices/data";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const BarChart = ({ isDashboard = false, chartData }) => {
+const BarChart = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const dispatch = useDispatch();
+  const chartData = useSelector((state) => state.data);
+
+  useEffect(() => {
+    dispatch(fetchData());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Preparing data for chart
-  const barChartData = chartData?.data?.result?.map((d) => {
+  const barChartData = (
+    chartData?.data?.result ? chartData?.data?.result : chartData?.data?.data
+  )?.map((d) => {
     return {
       Coins: d.name,
       "1 hour": d.priceChange1h,
